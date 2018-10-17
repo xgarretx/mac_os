@@ -1,0 +1,58 @@
+---
+brew_cask_packages:
+  - 'libreoffice'
+  - 'osxfuse'
+  - 'qtox'
+  - 'slack'
+  - 'sourcetree'
+  - 'telegram-desktop'
+  - 'transmission'
+  - 'virtualbol'
+  - 'visual-studio-code'
+  - 'vlc'
+brew_packages:
+  - 'ansible'
+  - 'archey'
+  - 'asciinema'
+  - 'bash-completion'
+  - 'cdrtools'
+  - 'cowsay'
+  - 'go'
+  - 'ipcalc'
+  - 'iperf'
+  - 'jq'
+  - 'mas'
+  - 'midnight-commander'
+  - 'mtr'
+  - 'ncdu'
+  - 'nmap'
+  - 'p7zip'
+  - 'pidof'
+  - 'pv'
+  - 'pwgen'
+  - 'radare2'
+  - 'sshfs'
+  - 'telnet'
+  - 'tig'
+  - 'tmux'
+  - 'unrar'
+  - 'watch'
+  - 'wget'
+  - 'xz'
+mas_installed_apps:
+  - { id: 1037126344, name: "Apple Configurator" }
+  - { id: 497799835, name: "Xcode" }
+  - { id: 409183694, name: "Keynote" }
+  - { id: 409789998, name: "Twitter" }
+  - { id: 803453959, name: "Slack" }
+  - { id: 549083868, name: "Display Menu" }
+  - { id: 409201541, name: "Pages" }
+  - { id: 1295203466, name: "Microsoft Remote Desktop" }
+  - { id: 425264550, name: "Blackmagic Disk Speed Test" }
+  - { id: 1147396723, name: "WhatsApp Desktop" }
+  - { id: 409203825, name: "Numbers" }
+  - { id: 1153157709, name: "Speedtest" }
+mas_email: ""
+mas_password: ""
+install_homebrew_if_missing: false
+upgrade_homebrew_packages: false

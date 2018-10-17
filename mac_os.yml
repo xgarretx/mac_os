@@ -1,0 +1,60 @@
+---
+- name: Install MacOS Packages
+  hosts: localhost
+  become: false
+  vars_files:
+    - default.config.yml
+
+  pre_tasks:
+    - name: Check Homebrew Is Installed
+      stat:
+        path: "/usr/local/bin/brew"
+      register: "homebrew_check"
+
+    - name: Fail If Homebrew Is Not Installed 
+      fail:
+        msg: "Homebrew is missing...Install from http://brew.sh/"
+      when: >
+            not homebrew_check.stat.exists and
+            not install_homebrew_if_missing
+
+    - name: Installing Homebrew
+      command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+      when: >
+            not homebrew_check.stat.exists and
+            install_homebrew_if_missing
+  tasks:
+    - name: Updating Homebrew
+      homebrew:
+        update_homebrew: true
+      when: homebrew_check.stat.exists
+
+    - name: Installing Homebrew Packages
+      homebrew:
+        name: "{{ item }}"
+        state: "present"
+        upgrade_all: "{{ upgrade_homebrew_packages }}"
+      with_items: '{{ brew_packages }}'
+      when: homebrew_check.stat.exists
+
+    - name: Installing Homebrew Cask Packages
+      homebrew_cask:
+        name: "{{ item }}"
+        state: "present"
+      with_items: '{{ brew_cask_packages }}'
+      when: homebrew_check.stat.exists
+      
+    - name: Sign in to MAS when email and password are provided.
+      shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}"'
+      register: mas_signin_result
+      when: mas_account_result.rc == 1 and mas_email != '' and mas_password != '' and not mas_signin_dialog
+
+    - name: Sign in to MAS when email is provided, and complete password and 2FA using dialog.
+      shell: 'mas signin "{{ mas_email }}" "{{ mas_password }}" --dialog'
+      register: mas_signin_result
+      when: mas_signin_dialog and mas_account_result.rc == 1 and mas_email != ''
+
+    - name: Ensure configured MAS apps are installed.
+      command: mas install "{{ item.id|default(item) }}"
+      with_items: "{{ mas_installed_apps + mas_installed_app_ids }}"
+      when: (item.id | default(item) | string) not in mas_list.stdout
